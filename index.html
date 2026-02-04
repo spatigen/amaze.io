@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Amaze: Using Image Editing Models for Visual Planning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amaze: Visual Planning with Image Editing</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #fcfcfc;
+    }
+    
+    /* 标题渐变效果 */
+    .title.is-1 {
+      background: -webkit-linear-gradient(45deg, #3273dc, #4a4a4a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+    }
+
+    /* 按钮美化 */
+    .external-link {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .external-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* 卡片样式 */
+    .info-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      height: 100%;
+      transition: transform 0.2s;
+    }
+    .info-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+    .icon-box {
+      font-size: 2rem;
+      color: #3273dc;
+      margin-bottom: 1rem;
+    }
+
+    /* 对比滑块 (Comparison Slider) 样式 */
+    .img-comp-container {
+      position: relative;
+      height: 400px; /* 根据你的图片高度调整 */
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      cursor: col-resize;
+    }
+    .img-comp-img {
+      position: absolute;
+      width: auto;
+      height: 100%;
+      overflow: hidden;
+    }
+    .img-comp-img img {
+      display: block;
+      height: 100%;
+      width: auto; /* 保持比例 */
+    }
+    .img-comp-slider {
+      position: absolute;
+      z-index: 9;
+      cursor: ew-resize;
+      width: 40px;
+      height: 40px;
+      background-color: #2196F3;
+      border-radius: 50%;
+      border: 3px solid white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .img-comp-slider::before {
+        content: '\f337';
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: white;
+    }
+
+    /* Navbar 美化 */
+    .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+    /* 图片说明 */
+    .caption {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      font-style: italic;
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="#">
+        <span class="icon" style="color: #333;"><i class="fas fa-home"></i></span>
+      </a>
+      <a class="navbar-item" href="https://huggingface.co/datasets/piekenius123/Amaze">
+        <span class="icon"><i class="fas fa-database"></i></span> &nbsp; Dataset
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">More Research</a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/spatigen/milr">MILR: Multimodal Reasoning</a>
+          <a class="navbar-item" href="https://github.com/spatigen/vhub">V-HUB: Humor Understanding</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Amaze</h1>
+          <h2 class="subtitle is-3" style="color: #555;">Using Image Editing Models for Visual Planning</h2>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+                <a href="#">Zhimu Zhou</a>,
+                <a href="#">Yanpeng Zhao</a>,
+                <a href="#">Qiuyu Liao</a>,
+                <a href="#">Bo Zhao</a>,
+                <a href="#">Xiaojian Ma</a>
+            </span>
+          </div>
+          <div class="is-size-6 publication-authors" style="margin-top: 10px; color: #666;">
+            <span class="author-block"><i class="fas fa-university"></i> BIGAI</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Benchmark Link -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/piekenius123/Amaze"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>HuggingFace Dataset</span>
+                </a>
+              </span>
+              <!-- Code Link -->
+              <span class="link-block">
+                <a href="https://github.com/spatigen/amaze"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Github Code</span>
+                </a>
+              </span>
+              <!-- Paper Link (Optional Placeholder) -->
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-light">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper (Coming Soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser Section with Comparison (模拟效果) -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+        
+
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-8 has-text-centered">
+            <!-- 这里为了展示，我还是用了你的 main.png，
+                 但建议换成一个 JavaScript Slider 或者 GIF -->
+            <figure class="image is-shadowless">
+                <img src="./static/assets/main.png" alt="Amaze Benchmark Overview" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            </figure>
+            <h3 class="subtitle has-text-centered caption" style="margin-top: 20px;">
+                <span class="icon"><i class="fas fa-info-circle"></i></span> 
+                <b>Amaze Bench</b> supports four maze shapes (circle, hexagon, square, triangle) with sizes ranging from 3×3 to 32×32.
+            </h3>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Introduction - 使用双列布局增加阅读性 -->
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">What is Amaze?</h2>
+        <div class="content has-text-justified" style="font-size: 1.1rem;">
+          <p>
+            Image editing models are great at seeing, but can they <strong>plan</strong>? 
+            This repository introduces <strong>Amaze</strong>, a benchmark designed to evaluate image editing models on visual planning tasks.
+          </p>
+          <p>
+            Given a maze layout, we ask the model to produce an edited image that solves or reflects the structure. 
+            Unlike traditional evaluations on image generating, we use  
+            <strong>automatic metrics</strong> to precisely evaluate the performance of image editing models.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Method / Example Section -->
+<section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-6">
+            <h3 class="title is-4">Iterative Visual Planning</h3>
+            <div class="content">
+                <p>
+                    You can use different models (like <strong>Bagel</strong>, <strong>Janus-Pro-7B</strong>, <strong>Qwen-Image-Edit</strong>) to solve mazes step-by-step. 
+                    The model acts as a visual planner, refining the path in latent space.
+                </p>
+                <p>
+                    <span class="tag is-info is-light">Multiple-step</span> Generation Process
+                    <br>
+                    <span class="tag is-success is-light">High accuracy</span> Pixel-level & Conceptual-level Accuracy
+                </p>
+            </div>
+        </div>
+        <div class="column is-6 has-text-centered">
+             <!-- 强烈建议这里放 GIF -->
+             <img src="./static/assets/automatic_metrics.png" class="image-hover" alt="Diffusion Process" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+             <p class="caption">Figure: Automatic metrics.</p>
+        </div>
+      </div>
+      <!-- GIF 展示行：circle → hexagon → square → triangle -->
+      <div class="columns is-centered is-vcentered" style="margin-top: 2rem;">
+        <div class="column is-3 has-text-centered">
+          <img src="./static/assets/circle.gif" class="image-hover" alt="Circle" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
+          <p class="caption">Circle</p>
+        </div>
+        <div class="column is-3 has-text-centered">
+          <img src="./static/assets/hexagon.gif" class="image-hover" alt="Hexagon" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
+          <p class="caption">Hexagon</p>
+        </div>
+        <div class="column is-3 has-text-centered">
+          <img src="./static/assets/square.gif" class="image-hover" alt="Square" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
+          <p class="caption">Square</p>
+        </div>
+        <div class="column is-3 has-text-centered">
+          <img src="./static/assets/triangle.gif" class="image-hover" alt="Triangle" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
+          <p class="caption">Triangle</p>
+        </div>
+      </div>
+      <p class="caption has-text-centered" style="margin-top: 0.5rem;">Flow matching model - Bagel, denoising step=10</p>
+    </div>
+</section>
+
+<!-- Features Grid (Cards) -->
+<section class="section has-background-white-ter">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 3rem;">Benchmark Features</h2>
+    
+    <div class="columns is-multiline">
+      <!-- Supported Models Card -->
+      <div class="column is-6">
+        <div class="info-card">
+          <div class="icon-box"><i class="fas fa-robot"></i></div>
+          <h4 class="title is-5">Supported Models</h4>
+          <div class="content">
+            <ul style="list-style-type: none; margin-left: 0;">
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Bagel</strong> (ByteDance-Seed)</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Janus-Pro-7B</strong></li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Qwen-Image-Edit</strong></li>
+              <li><i class="fas fa-cloud" style="color:blue; font-size:0.8em;"></i> API-based Models</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Card -->
+      <div class="column is-6">
+        <div class="info-card">
+          <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+          <h4 class="title is-5">Evaluation Metrics</h4>
+          <div class="content">
+            <p>Comprehensive assessment logic in <code>infer/maze_metrics.py</code>:</p>
+            <ul style="list-style-type: none; margin-left: 0;">
+                <li><strong>MSE:</strong> Pixel-level structural fidelity.</li>
+                <li><strong>Solvability:</strong> Conceptual-level accuracy.</li>
+                <li><strong>Robustness:</strong> Tested across 4 shapes & variable sizes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quick Start Block -->
+    <!-- <div class="columns is-centered" style="margin-top: 2rem;">
+        <div class="column is-12">
+            <div class="info-card" style="background: #2d2d2d; color: #fff;">
+                <h4 class="title is-5" style="color: #fff;"><i class="fas fa-terminal"></i> Quick Start</h4>
+                <div class="content">
+<pre style="background: #1a1a1a; color: #00ff00; border: none;">
+# Load Data
+from datasets import load_dataset
+ds = load_dataset("piekenius123/Amaze")
+
+# Run Inference (Bagel Example)
+bash scripts/infer_bagel.sh
+</pre>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            <a href="https://huggingface.co/datasets/piekenius123/Amaze" class="icon-link"><i class="fas fa-database fa-2x"></i></a>
+            &nbsp;&nbsp;
+            <a href="https://github.com/spatigen/amaze" class="icon-link"><i class="fab fa-github fa-2x"></i></a>
+          </p>
+          <p style="font-size: 0.9rem; color: #aaa;">
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.navbar-burger').addEventListener('click', () => {
+    document.querySelector('.navbar-menu').classList.toggle('is-active');
+  });
+</script>
+
+</body>
+</html>
