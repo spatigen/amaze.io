@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Amaze: Using Image Editing Models for Visual Planning">
+  <meta name="description" content="Amaze: Probing Visual Planning in Image Editing Models">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Amaze: Visual Planning with Image Editing</title>
 
@@ -109,6 +109,46 @@
       font-size: 0.9rem;
       margin-top: 10px;
       font-style: italic;
+    }
+
+    /* Benchmark 结果表格 */
+    .benchmark-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: white;
+    }
+    .benchmark-table th,
+    .benchmark-table td {
+      padding: 0.6rem 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    .benchmark-table th {
+      background: #3273dc;
+      color: white;
+      font-weight: 600;
+    }
+    .benchmark-table th:first-child,
+    .benchmark-table td:first-child {
+      text-align: left;
+      min-width: 140px;
+    }
+    .benchmark-table tr.section-row td {
+      background: #EFEFEF;
+      font-style: italic;
+      font-weight: 500;
+      color: #333;
+    }
+    .benchmark-table .best {
+      font-weight: 700;
+      color: #3273dc;
     }
   </style>
 
@@ -350,6 +390,194 @@ bash scripts/infer_bagel.sh
 
   </div>
 </section>
+
+<!-- Amaze Bench 基准测试结果 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 has-text-centered" style="margin-bottom: 1rem;">Results on Amaze Benchmark</h2>
+        <p class="has-text-centered caption" style="margin-bottom: 1.5rem;">
+          Results (%) on Amaze across editing models. <span class="icon has-text-info"><i class="fas fa-arrow-down"></i></span> lower is better, <span class="icon has-text-success"><i class="fas fa-arrow-up"></i></span> higher is better.
+        </p>
+        <div class="benchmark-table-wrap">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Violation (↓)</th>
+                <th>Coverage (↑)</th>
+                <th>MSE In (↓)</th>
+                <th>MSE Out (↓)</th>
+                <th>Pass@1 (↑)</th>
+                <th>Pass@5 (↑)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="section-row"><td colspan="7">proprietary models</td></tr>
+              <tr>
+                <td>GPT-image-1</td>
+                <td>62.88</td>
+                <td>58.97</td>
+                <td>41.16</td>
+                <td>52.76</td>
+                <td>5.40</td>
+                <td>6.06</td>
+              </tr>
+              <tr>
+                <td>nanobanana-pro</td>
+                <td>47.76</td>
+                <td class="best">64.21</td>
+                <td>24.20</td>
+                <td>17.21</td>
+                <td>4.82</td>
+                <td>9.28</td>
+              </tr>
+              <tr>
+                <td>Seedream</td>
+                <td>16.90</td>
+                <td>25.67</td>
+                <td>28.82</td>
+                <td>30.96</td>
+                <td>2.14</td>
+                <td>3.21</td>
+              </tr>
+              <tr class="section-row"><td colspan="7">open-source models</td></tr>
+              <tr>
+                <td>Flux-Kontext-Dev</td>
+                <td>23.84</td>
+                <td>30.24</td>
+                <td>30.96</td>
+                <td>18.31</td>
+                <td>0.36</td>
+                <td>3.57</td>
+              </tr>
+              <tr>
+                <td>Qwen-Image-Edit</td>
+                <td>19.37</td>
+                <td>28.51</td>
+                <td>18.82</td>
+                <td>5.70</td>
+                <td>1.43</td>
+                <td>2.14</td>
+              </tr>
+              <tr>
+                <td>Bagel</td>
+                <td>28.91</td>
+                <td>27.15</td>
+                <td>11.64</td>
+                <td>5.84</td>
+                <td>0.00</td>
+                <td>1.00</td>
+              </tr>
+              <tr>
+                <td>Janus-Pro</td>
+                <td class="best">5.41</td>
+                <td>1.85</td>
+                <td>57.47</td>
+                <td>76.80</td>
+                <td>0.00</td>
+                <td>0.00</td>
+              </tr>
+              <tr>
+                <td>Bagel (w/ finetuning)</td>
+                <td>12.21</td>
+                <td>51.02</td>
+                <td class="best">8.66</td>
+                <td class="best">3.07</td>
+                <td class="best">11.54</td>
+                <td class="best">23.64</td>
+              </tr>
+              <tr>
+                <td>Janus-Pro (w/ finetuning)</td>
+                <td>35.60</td>
+                <td>23.33</td>
+                <td>55.99</td>
+                <td>50.94</td>
+                <td>1.43</td>
+                <td>2.22</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Generalization -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Generalization</h2>
+    <div class="columns is-centered">
+      <div class="column is-10 has-text-centered">
+        <figure class="image">
+          <img src="./static/assets/generalization.png" alt="Generalization across train and test geometries" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
+        </figure>
+        <p class="caption" style="margin-top: 0.75rem;">Generalization of different training geometry types(left) and different training size(right)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scaling Effect -->
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Scaling Effect</h2>
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-6 has-text-centered">
+        <figure class="image">
+          <img src="./static/assets/scaling_combined.png" alt="Data scaling: Pass@5 vs number of samples" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
+        </figure>
+        <p class="caption" style="margin-top: 0.75rem;">
+          <strong>Data scaling.</strong> Pass@5 vs. number of samples on hexagon and circle (trained for 500 steps, respectively). 
+        </p>
+      </div>
+      <div class="column is-6 has-text-centered">
+        <figure class="image">
+          <img src="./static/assets/compute.png" alt="Training time scaling: Pass@5 vs training steps" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
+        </figure>
+        <p class="caption" style="margin-top: 0.75rem;">
+          <strong>Training time scaling.</strong> More steps improve Pass@5 on both in-domain and OOD geometries, trained on hexagon; 800 steps reach top performance.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Conclusion & Future Work (可选) -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="content">
+      <h2 class="title is-3">Conclusion</h2>
+      <p>
+        <strong>Amaze</strong> reveals that while current image editing models possess impressive generative capabilities, their <strong>visual planning</strong> abilities remain a significant bottleneck. 
+        Our benchmark provides a standardized way to measure this progress, and our findings on scaling and generalization suggest that targeted fine-tuning is a promising path toward more "intelligent" and "reasoning-capable" visual models.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BibTeX Citation (非常重要) -->
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <p>If you find our work or dataset useful for your research, please consider citing:</p>
+    <pre style="background-color: #f5f5f5; padding: 1.5rem; border-radius: 8px; border: 1px solid #ddd;"><code></code></pre>
+  </div>
+</section> -->
+
+<!-- Acknowledgements (提升格调) -->
+<!-- <section class="section">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">Acknowledgements</h2>
+    <p>
+      We thank the team at <strong>BIGAI</strong> for providing the computational resources. 
+      This work was supported by the National Key R&D Program of China. 
+      Special thanks to the contributors of the open-source models (Bagel, Janus, Qwen) used in our evaluation.
+    </p>
+  </div>
+</section> -->
 
 <footer class="footer">
   <div class="container">
