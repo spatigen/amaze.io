@@ -2,22 +2,21 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Amaze: Probing Visual Planning in Image Editing Models">
+  <meta name="description" content="AMAZE: Probing visual planning in image editing models with Maze and Queen tasks.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Amaze: Visual Planning with Image Editing</title>
+  <title>AMAZE: Probing Visual Planning in Image Editing Models</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  
+
   <style>
     body {
       font-family: 'Noto Sans', sans-serif;
       background-color: #fcfcfc;
     }
-    
-    /* 标题渐变效果 */
+
     .title.is-1 {
       background: -webkit-linear-gradient(45deg, #3273dc, #4a4a4a);
       -webkit-background-clip: text;
@@ -25,7 +24,6 @@
       font-weight: 800;
     }
 
-    /* 按钮美化 */
     .external-link {
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -34,7 +32,6 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    /* 卡片样式 */
     .info-card {
       background: white;
       border-radius: 12px;
@@ -53,57 +50,10 @@
       margin-bottom: 1rem;
     }
 
-    /* 对比滑块 (Comparison Slider) 样式 */
-    .img-comp-container {
-      position: relative;
-      height: 400px; /* 根据你的图片高度调整 */
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      cursor: col-resize;
-    }
-    .img-comp-img {
-      position: absolute;
-      width: auto;
-      height: 100%;
-      overflow: hidden;
-    }
-    .img-comp-img img {
-      display: block;
-      height: 100%;
-      width: auto; /* 保持比例 */
-    }
-    .img-comp-slider {
-      position: absolute;
-      z-index: 9;
-      cursor: ew-resize;
-      width: 40px;
-      height: 40px;
-      background-color: #2196F3;
-      border-radius: 50%;
-      border: 3px solid white;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    .img-comp-slider::before {
-        content: '\f337';
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        color: white;
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
-    /* Navbar 美化 */
-    .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-
-    /* 图片说明 */
     .caption {
       color: #666;
       font-size: 0.9rem;
@@ -111,44 +61,123 @@
       font-style: italic;
     }
 
-    /* Benchmark 结果表格 */
     .benchmark-table-wrap {
-      overflow-x: auto;
       margin: 1.5rem 0;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      background: white;
     }
     .benchmark-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       background: white;
     }
     .benchmark-table th,
     .benchmark-table td {
-      padding: 0.6rem 0.75rem;
+      padding: 0.55rem 0.6rem;
       text-align: center;
       border-bottom: 1px solid #eee;
+      white-space: normal;
+      line-height: 1.35;
     }
     .benchmark-table th {
       background: #3273dc;
       color: white;
       font-weight: 600;
     }
+    .benchmark-table thead tr.group-head th {
+      background: #275ea7;
+      font-size: 0.92rem;
+    }
+    .benchmark-table thead tr.metric-head th {
+      background: #3273dc;
+      font-size: 0.84rem;
+    }
     .benchmark-table th:first-child,
     .benchmark-table td:first-child {
       text-align: left;
-      min-width: 140px;
+      min-width: 190px;
     }
     .benchmark-table tr.section-row td {
-      background: #EFEFEF;
+      background: #efefef;
       font-style: italic;
       font-weight: 500;
       color: #333;
+      text-align: left;
     }
     .benchmark-table .best {
       font-weight: 700;
       color: #3273dc;
+    }
+
+    .results-subtitle {
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+      color: #3273dc;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .publication-links .button {
+      margin: 0.25rem;
+    }
+
+    .image-shadow {
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+
+    .gif-box {
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 100%;
+    }
+
+    .placeholder-gif {
+      border-radius: 8px;
+      border: 2px dashed #d0d7e2;
+      background: #fafbfc;
+      min-height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7a7a7a;
+      font-weight: 600;
+      line-height: 1.6;
+      padding: 1rem;
+    }
+
+    .bibtex-box {
+      background-color: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      overflow-x: auto;
+    }
+
+    .section-note {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .figure-block {
+      margin-top: 1.75rem;
+    }
+
+    .figure-caption-card {
+      height: auto;
+    }
+
+    .figure-caption-card .title {
+      margin-bottom: 1rem;
+    }
+
+    .figure-caption-text {
+      color: #666;
+      font-size: 0.98rem;
+      line-height: 1.7;
     }
   </style>
 
@@ -188,55 +217,57 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Amaze</h1>
+          <h1 class="title is-1 publication-title">AMAZE</h1>
           <h2 class="subtitle is-3" style="color: #555;">Probing Visual Planning in Image Editing Models</h2>
-          
+
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-                <a href="#">Zhimu Zhou</a>,
-                <a href="#">Yanpeng Zhao</a>,
-                <a href="#">Qiuyu Liao</a>,
-                <a href="#">Bo Zhao</a>,
-                <a href="#">Xiaojian Ma</a>
+              <a href="#">Zhimu Zhou</a>,
+              <a href="#">Yanpeng Zhao</a>,
+              <a href="#">Qiuyu Liao</a>,
+              <a href="#">Bo Zhao</a>,
+              <a href="#">Xiaojian Ma</a>
             </span>
           </div>
           <div class="is-size-6 publication-authors" style="margin-top: 10px; color: #666;">
-            <span class="author-block"><i class="fas fa-university"></i> BIGAI</span>
+            <span class="author-block">
+              <i class="fas fa-university"></i>
+              Shanghai Jiao Tong University &nbsp;|&nbsp; Renmin University of China &nbsp;|&nbsp; State Key Laboratory of General Artificial Intelligence, BIGAI
+            </span>
           </div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
-              <!-- Benchmark Link -->
               <span class="link-block">
-                <a href="https://huggingface.co/spaces/piekenius123/Amaze-Visualization"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>HuggingFace Dataset</span>
+                <a href="./2604.22868v1.pdf" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper PDF</span>
                 </a>
               </span>
-              <!-- Code Link -->
               <span class="link-block">
-                <a href="https://github.com/spatigen/amaze"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="https://github.com/spatigen/amaze" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fab fa-github"></i></span>
                   <span>Github Code</span>
                 </a>
               </span>
-              <!-- Leaderboard Link -->
               <span class="link-block">
-                <a href="https://huggingface.co/spaces/piekenius123/Amaze-Leaderboard"
-                   class="external-link button is-normal is-rounded is-dark">
+                <a href="https://huggingface.co/datasets/piekenius123/Amaze" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/piekenius123/Amaze-Visualization" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-image"></i></span>
+                  <span>Visualization</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/piekenius123/Amaze-Leaderboard" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-chart-line"></i></span>
                   <span>Leaderboard</span>
                 </a>
               </span>
-              <!-- Paper Link (Optional Placeholder) -->
-              <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-light">
-                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                  <span>Paper (Coming Soon)</span>
-                </a>
-              </span>
             </div>
           </div>
         </div>
@@ -245,45 +276,38 @@
   </div>
 </section>
 
-<!-- Teaser Section with Comparison (模拟效果) -->
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-        
-
       <div class="columns is-centered is-vcentered">
-        <div class="column is-8 has-text-centered">
-            <!-- 这里为了展示，我还是用了你的 main.png，
-                 但建议换成一个 JavaScript Slider 或者 GIF -->
-            <figure class="image is-shadowless">
-                <img src="./static/assets/main.png" alt="Amaze Benchmark Overview" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            </figure>
-            <h3 class="subtitle has-text-centered caption" style="margin-top: 20px;">
-                <span class="icon"><i class="fas fa-info-circle"></i></span> 
-                <b>Amaze Bench</b> supports four maze shapes (circle, hexagon, square, triangle) with sizes ranging from 3×3 to 16×16.
-            </h3>
+        <div class="column is-10 has-text-centered">
+          <figure class="image is-shadowless">
+            <img src="./static/assets/main.png" alt="The AMAZE tasks" class="image-shadow" style="width: 88%; margin: 0 auto;">
+          </figure>
+          <h3 class="subtitle has-text-centered caption" style="margin-top: 20px;">
+            <span class="icon"><i class="fas fa-info-circle"></i></span>
+            <b>Figure 1. The AMAZE tasks.</b> Maze and Queen provide complementary probes of visual planning, spanning continuous vs. discrete solution spaces, sequential vs. parallel planning, and local vs. global constraints.
+          </h3>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- Introduction - 使用双列布局增加阅读性 -->
 <section class="section has-background-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-centered">What is Amaze?</h2>
+        <h2 class="title is-3 has-text-centered">What is AMAZE?</h2>
         <div class="content has-text-justified" style="font-size: 1.1rem;">
           <p>
-            Image editing models are great at seeing, but can they <strong>plan</strong>? 
-            This repository introduces <strong>Amaze</strong>, a benchmark designed to evaluate image editing models on visual planning tasks.
+            <strong>AMAZE</strong> is a benchmark for probing <strong>intrinsic visual planning</strong> in image editing models. Instead of converting visual planning into text-centric reasoning, the paper studies whether editing models can solve planning tasks directly in image space.
           </p>
           <p>
-            Given a maze layout, we ask the model to produce an edited image that solves or reflects the structure. 
-            Unlike traditional evaluations on image generating, we use  
-            <strong>automatic metrics</strong> to precisely evaluate the performance of image editing models.
+            The benchmark contains two abstract puzzle families: <strong>Maze</strong> and <strong>Queen</strong>. Maze emphasizes sequential path planning under local geometric constraints, while Queen emphasizes combinatorial placement under global constraints. Their abstract structure minimizes recognition complexity and makes logical reasoning the core challenge.
+          </p>
+          <p>
+            The accompanying paradigm, <strong>EAR (Editing as Reasoning)</strong>, reformulates planning as a single-step image transformation. AMAZE then evaluates outputs with automatic metrics that separate <strong>logical validity</strong> from <strong>pixel-wise fidelity</strong>.
           </p>
         </div>
       </div>
@@ -291,301 +315,405 @@
   </div>
 </section>
 
-<!-- Method / Example Section -->
 <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered is-vcentered">
-        <div class="column is-6">
-            <h3 class="title is-4">Iterative Visual Planning</h3>
-            <div class="content">
-                <p>
-                    You can use different models (like <strong>Bagel</strong>, <strong>Janus-Pro-7B</strong>, <strong>Qwen-Image-Edit</strong>) to solve mazes step-by-step. 
-                    The model acts as a visual planner, refining the path in latent space.
-                </p>
-                <p>
-                    <span class="tag is-info is-light">Multiple-step</span> Generation Process
-                    <br>
-                    <span class="tag is-success is-light">High accuracy</span> Pixel-level & Conceptual-level Accuracy
-                </p>
-            </div>
-        </div>
-        <div class="column is-6 has-text-centered">
-             <!-- 强烈建议这里放 GIF -->
-             <img src="./static/assets/automatic_metrics.png" class="image-hover" alt="Diffusion Process" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-             <p class="caption">Figure: Automatic metrics.</p>
+  <div class="container is-max-desktop">
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-6">
+        <h3 class="title is-4">Editing as Reasoning (EAR)</h3>
+        <div class="content">
+          <p>
+            EAR asks an image editing model to transform an input puzzle image directly into a solved image. This avoids explicit step-by-step planning-by-generation and turns the whole planning process into one atomic visual edit.
+          </p>
+          <p>
+            AMAZE supports automatic evaluation on both tasks. Logical validity is measured through <strong>Coverage</strong>, <strong>Violation</strong>, and <strong>Pass</strong>, while pixel-wise fidelity is measured using <strong>MSE-In</strong> and <strong>MSE-Out</strong>. The paper reports <strong>98% agreement</strong> between the automatic logical metric and human judges.
+          </p>
+          <p>
+            <span class="tag is-info is-light">EAR</span>
+            <span class="tag is-success is-light">Automatic Evaluation</span>
+            <span class="tag is-warning is-light">Maze + Queen</span>
+          </p>
         </div>
       </div>
-      <!-- GIF 展示行：circle → hexagon → square → triangle -->
-      <div class="columns is-centered is-vcentered" style="margin-top: 2rem;">
-        <div class="column is-3 has-text-centered">
-          <img src="./static/assets/circle.gif" class="image-hover" alt="Circle" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
-          <p class="caption">Circle</p>
-        </div>
-        <div class="column is-3 has-text-centered">
-          <img src="./static/assets/hexagon.gif" class="image-hover" alt="Hexagon" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
-          <p class="caption">Hexagon</p>
-        </div>
-        <div class="column is-3 has-text-centered">
-          <img src="./static/assets/square.gif" class="image-hover" alt="Square" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
-          <p class="caption">Square</p>
-        </div>
-        <div class="column is-3 has-text-centered">
-          <img src="./static/assets/triangle.gif" class="image-hover" alt="Triangle" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 100%;">
-          <p class="caption">Triangle</p>
-        </div>
+      <div class="column is-6 has-text-centered">
+        <img src="./static/assets/paradigm_metrics.png" alt="Overview of EAR" class="image-shadow">
+        <p class="caption"><b>Figure 2. Overview of EAR.</b> Left: editing-as-reasoning pipeline. Right: automatic evaluation for logical validity and pixel-level fidelity.</p>
       </div>
-      <p class="caption has-text-centered" style="margin-top: 0.5rem;">Flow matching model - Bagel, denoising step=10</p>
     </div>
+
+    <div class="columns is-centered is-vcentered" style="margin-top: 2rem;">
+      <div class="column has-text-centered">
+        <img src="./static/assets/circle.gif" class="gif-box" alt="Circle maze gif">
+        <p class="caption">Circle</p>
+      </div>
+      <div class="column has-text-centered">
+        <img src="./static/assets/hexagon.gif" class="gif-box" alt="Hexagon maze gif">
+        <p class="caption">Hexagon</p>
+      </div>
+      <div class="column has-text-centered">
+        <img src="./static/assets/square.gif" class="gif-box" alt="Square maze gif">
+        <p class="caption">Square</p>
+      </div>
+      <div class="column has-text-centered">
+        <img src="./static/assets/triangle.gif" class="gif-box" alt="Triangle maze gif">
+        <p class="caption">Triangle</p>
+      </div>
+      <div class="column has-text-centered">
+        <img src="./static/assets/queen.gif" class="gif-box" alt="Queen diffusion gif">
+        <p class="caption">Queen</p>
+      </div>
+    </div>
+    <p class="caption has-text-centered" style="margin-top: 0.5rem;">Maze and Queen denoising traces from a fine-tuned Bagel model.</p>
+  </div>
 </section>
 
-<!-- Features Grid (Cards) -->
 <section class="section has-background-white-ter">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered" style="margin-bottom: 3rem;">Benchmark Features</h2>
-    
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 3rem;">Benchmark Highlights</h2>
+
     <div class="columns is-multiline">
-      <!-- Supported Models Card -->
+      <div class="column is-6">
+        <div class="info-card">
+          <div class="icon-box"><i class="fas fa-puzzle-piece"></i></div>
+          <h4 class="title is-5">Complementary Tasks</h4>
+          <div class="content">
+            <ul style="list-style-type: none; margin-left: 0;">
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Maze:</strong> continuous route planning with circle, hexagon, square, and triangle geometries.</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Queen:</strong> discrete placement planning with row, column, region, and adjacency constraints.</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> Two complementary reasoning regimes: sequential/local and combinatorial/global.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-6">
+        <div class="info-card">
+          <div class="icon-box"><i class="fas fa-ruler-combined"></i></div>
+          <h4 class="title is-5">Automatic Metrics</h4>
+          <div class="content">
+            <ul style="list-style-type: none; margin-left: 0;">
+              <li><strong>Coverage:</strong> how much of the target solution is correctly generated.</li>
+              <li><strong>Violation:</strong> how much of the generated solution departs from the target.</li>
+              <li><strong>Pass:</strong> logical correctness after balancing coverage and violation.</li>
+              <li><strong>MSE-In / MSE-Out:</strong> pixel-level fidelity inside and outside the solution region.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-6">
+        <div class="info-card">
+          <div class="icon-box"><i class="fas fa-layer-group"></i></div>
+          <h4 class="title is-5">Data Coverage</h4>
+          <div class="content">
+            <ul style="list-style-type: none; margin-left: 0;">
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Maze:</strong> 2,800 test examples.</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Queen:</strong> 350 test examples.</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> Maze scales from <strong>3×3 to 16×16</strong>; Queen scales from <strong>4×4 to 10×10</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div class="column is-6">
         <div class="info-card">
           <div class="icon-box"><i class="fas fa-robot"></i></div>
-          <h4 class="title is-5">Supported Models</h4>
+          <h4 class="title is-5">Evaluated Models</h4>
           <div class="content">
             <ul style="list-style-type: none; margin-left: 0;">
-              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Bagel</strong> (ByteDance-Seed)</li>
-              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Janus-Pro-7B</strong></li>
-              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Qwen-Image-Edit</strong></li>
-              <li><i class="fas fa-cloud" style="color:blue; font-size:0.8em;"></i> API-based Models</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Metrics Card -->
-      <div class="column is-6">
-        <div class="info-card">
-          <div class="icon-box"><i class="fas fa-chart-line"></i></div>
-          <h4 class="title is-5">Evaluation Metrics</h4>
-          <div class="content">
-            <p>Comprehensive assessment logic in <code>infer/maze_metrics.py</code>:</p>
-            <ul style="list-style-type: none; margin-left: 0;">
-                <li><strong>MSE:</strong> Pixel-level structural fidelity.</li>
-                <li><strong>Solvability:</strong> Conceptual-level accuracy.</li>
-                <li><strong>Robustness:</strong> Tested across 4 shapes & variable sizes.</li>
+              <li><i class="fas fa-cloud" style="color:blue; font-size:0.8em;"></i> <strong>Proprietary:</strong> GPT-Image-1, NanoBanana-Pro, Seedream-4.5</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> <strong>Open-source:</strong> Flux-Kontext-Dev, Qwen-Image-Edit, Bagel, Janus-Pro</li>
+              <li><i class="fas fa-check" style="color:green; font-size:0.8em;"></i> Includes diffusion-based and autoregressive editing models.</li>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Quick Start Block -->
-    <!-- <div class="columns is-centered" style="margin-top: 2rem;">
-        <div class="column is-12">
-            <div class="info-card" style="background: #2d2d2d; color: #fff;">
-                <h4 class="title is-5" style="color: #fff;"><i class="fas fa-terminal"></i> Quick Start</h4>
-                <div class="content">
-<pre style="background: #1a1a1a; color: #00ff00; border: none;">
-# Load Data
-from datasets import load_dataset
-ds = load_dataset("piekenius123/Amaze")
-
-# Run Inference (Bagel Example)
-bash scripts/infer_bagel.sh
-</pre>
-                </div>
-            </div>
-        </div> -->
-    </div>
-
   </div>
 </section>
 
-<!-- Amaze Bench 基准测试结果 -->
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full">
-        <h2 class="title is-3 has-text-centered" style="margin-bottom: 1rem;">Results on Amaze Benchmark</h2>
+        <h2 class="title is-3 has-text-centered" style="margin-bottom: 1rem;">Main Results on AMAZE</h2>
         <p class="has-text-centered caption" style="margin-bottom: 1.5rem;">
-          Results (%) on Amaze across editing models. <span class="icon has-text-info"><i class="fas fa-arrow-down"></i></span> lower is better, <span class="icon has-text-success"><i class="fas fa-arrow-up"></i></span> higher is better.
+          Results (%) on Maze and Queen. Lower is better for Violation and MSE, higher is better for Coverage and Pass.
         </p>
+
+        <h4 class="title is-5 results-subtitle">Continuous (Maze) Task</h4>
         <div class="benchmark-table-wrap">
           <table class="benchmark-table">
             <thead>
-              <tr>
+              <tr class="metric-head">
                 <th>Model</th>
-                <th>Violation (↓)</th>
-                <th>Coverage (↑)</th>
-                <th>MSE In (↓)</th>
-                <th>MSE Out (↓)</th>
-                <th>Pass@1 (↑)</th>
-                <th>Pass@5 (↑)</th>
+                <th>Violation</th>
+                <th>Coverage</th>
+                <th>MSE In</th>
+                <th>MSE Out</th>
+                <th>Pass@1</th>
+                <th>Pass@5</th>
               </tr>
             </thead>
             <tbody>
               <tr class="section-row"><td colspan="7">proprietary models</td></tr>
               <tr>
-                <td>GPT-image-1</td>
-                <td>62.88</td>
-                <td>58.97</td>
-                <td>41.16</td>
-                <td>52.76</td>
-                <td>5.40</td>
-                <td>6.06</td>
+                <td>GPT-Image-1</td>
+                <td>62.88</td><td>58.97</td><td>41.16</td><td>52.76</td><td>5.40</td><td>6.06</td>
               </tr>
               <tr>
-                <td>nanobanana-pro</td>
-                <td>47.76</td>
-                <td class="best">64.21</td>
-                <td>24.20</td>
-                <td>17.21</td>
-                <td>4.82</td>
-                <td>9.28</td>
+                <td>NanoBanana-Pro</td>
+                <td>47.76</td><td class="best">64.21</td><td>24.20</td><td>17.21</td><td>4.82</td><td>9.28</td>
               </tr>
               <tr>
-                <td>Seedream</td>
-                <td>16.90</td>
-                <td>25.67</td>
-                <td>28.82</td>
-                <td>30.96</td>
-                <td>2.14</td>
-                <td>3.21</td>
+                <td>Seedream-4.5</td>
+                <td>16.90</td><td>25.67</td><td>28.82</td><td>30.96</td><td>2.14</td><td>3.21</td>
               </tr>
-              <tr class="section-row"><td colspan="7">open-source models</td></tr>
+
+              <tr class="section-row"><td colspan="7">open-source models (zero-shot)</td></tr>
               <tr>
                 <td>Flux-Kontext-Dev</td>
-                <td>23.84</td>
-                <td>30.24</td>
-                <td>30.96</td>
-                <td>18.31</td>
-                <td>0.36</td>
-                <td>3.57</td>
+                <td>23.84</td><td>30.24</td><td>30.96</td><td>18.31</td><td>0.36</td><td>3.57</td>
               </tr>
               <tr>
                 <td>Qwen-Image-Edit</td>
-                <td>19.37</td>
-                <td>28.51</td>
-                <td>18.82</td>
-                <td>5.70</td>
-                <td>1.43</td>
-                <td>2.14</td>
+                <td>19.37</td><td>28.51</td><td>18.82</td><td>5.70</td><td>1.43</td><td>2.14</td>
               </tr>
               <tr>
                 <td>Bagel</td>
-                <td>28.91</td>
-                <td>27.15</td>
-                <td>11.64</td>
-                <td>5.84</td>
-                <td>0.00</td>
-                <td>1.00</td>
+                <td>28.91</td><td>27.15</td><td>11.64</td><td>5.84</td><td>0.00</td><td>1.00</td>
               </tr>
               <tr>
                 <td>Janus-Pro</td>
-                <td class="best">5.41</td>
-                <td>1.85</td>
-                <td>57.47</td>
-                <td>76.80</td>
-                <td>0.00</td>
-                <td>0.00</td>
+                <td class="best">5.41</td><td>1.85</td><td>57.47</td><td>76.80</td><td>0.00</td><td>0.00</td>
+              </tr>
+
+              <tr class="section-row"><td colspan="7">fine-tuned open-source models</td></tr>
+              <tr>
+                <td>Bagel (fine-tuned)</td>
+                <td>12.21</td><td>51.02</td><td class="best">8.66</td><td class="best">3.07</td><td class="best">11.54</td><td class="best">23.64</td>
               </tr>
               <tr>
-                <td>Bagel (w/ finetuning)</td>
-                <td>12.21</td>
-                <td>51.02</td>
-                <td class="best">8.66</td>
-                <td class="best">3.07</td>
-                <td class="best">11.54</td>
-                <td class="best">23.64</td>
-              </tr>
-              <tr>
-                <td>Janus-Pro (w/ finetuning)</td>
-                <td>35.60</td>
-                <td>23.33</td>
-                <td>55.99</td>
-                <td>50.94</td>
-                <td>1.43</td>
-                <td>2.22</td>
+                <td>Janus-Pro (fine-tuned)</td>
+                <td>35.60</td><td>23.33</td><td>55.99</td><td>50.94</td><td>1.43</td><td>2.22</td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <h4 class="title is-5 results-subtitle">Discrete (Queen) Task</h4>
+        <div class="benchmark-table-wrap">
+          <table class="benchmark-table">
+            <thead>
+              <tr class="metric-head">
+                <th>Model</th>
+                <th>Violation</th>
+                <th>Coverage</th>
+                <th>MSE In</th>
+                <th>MSE Out</th>
+                <th>Pass@1</th>
+                <th>Pass@5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="section-row"><td colspan="7">proprietary models</td></tr>
+              <tr>
+                <td>GPT-Image-1</td>
+                <td>62.91</td><td>37.09</td><td>11.84</td><td>5.87</td><td>0.00</td><td>2.28</td>
+              </tr>
+              <tr>
+                <td>NanoBanana-Pro</td>
+                <td>32.56</td><td>67.43</td><td>9.10</td><td>1.62</td><td class="best">30.35</td><td class="best">35.58</td>
+              </tr>
+              <tr>
+                <td>Seedream-4.5</td>
+                <td>76.86</td><td>23.14</td><td>11.55</td><td>5.95</td><td>2.86</td><td>2.86</td>
+              </tr>
+
+              <tr class="section-row"><td colspan="7">open-source models (zero-shot)</td></tr>
+              <tr>
+                <td>Flux-Kontext-Dev</td>
+                <td>78.63</td><td>21.37</td><td>11.48</td><td>7.71</td><td>0.92</td><td>2.34</td>
+              </tr>
+              <tr>
+                <td>Qwen-Image-Edit</td>
+                <td>69.52</td><td>30.47</td><td>8.83</td><td>5.30</td><td>2.86</td><td>4.00</td>
+              </tr>
+              <tr>
+                <td>Bagel</td>
+                <td>61.57</td><td>38.43</td><td>8.94</td><td>1.22</td><td>0.00</td><td>0.00</td>
+              </tr>
+              <tr>
+                <td>Janus-Pro</td>
+                <td>84.24</td><td>15.76</td><td>12.97</td><td>9.83</td><td>0.00</td><td>0.57</td>
+              </tr>
+
+              <tr class="section-row"><td colspan="7">fine-tuned open-source models</td></tr>
+              <tr>
+                <td>Bagel (fine-tuned)</td>
+                <td>68.27</td><td>31.73</td><td class="best">6.05</td><td class="best">0.63</td><td class="best">14.57</td><td class="best">14.29</td>
+              </tr>
+              <tr>
+                <td>Janus-Pro (fine-tuned)</td>
+                <td class="best">16.07</td><td class="best">83.93</td><td>7.91</td><td>1.38</td><td>12.57</td><td>13.03</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-note has-text-centered">
+          Zero-shot performance is generally weak. Fine-tuning Bagel on basic scales yields strong gains and better generalization, while diffusion-based editing appears more effective than autoregressive editing for developing visual planning logic.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Qualitative Visual Planning</h2>
+    <div class="columns is-centered">
+      <div class="column is-11 has-text-centered">
+        <figure class="image">
+          <img src="./static/assets/diffusion_cot.png" alt="Denoising steps for Maze and Queen" class="image-shadow">
+        </figure>
+        <p class="caption" style="margin-top: 0.75rem;">
+          Fine-tuned Bagel shows coarse-to-fine planning dynamics. On Maze, faint global routes emerge early and are gradually refined; on Queen, a coarse global configuration forms first and is then adjusted.
+        </p>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Generalization</h2>
+
+    <div class="figure-block">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5">
+          <div class="info-card figure-caption-card">
+            <h4 class="title is-5">Cross-geometry generalization</h4>
+            <p class="figure-caption-text">
+              Training on hexagonal mazes transfers best to other geometries, suggesting that a richer directional action space encourages geometry-invariant planning rather than narrow in-domain pattern matching.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <figure class="image">
+            <img src="./static/assets/generalization.png" alt="Cross-geometry generalization" class="image-shadow">
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="figure-block">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5">
+          <div class="info-card figure-caption-card">
+            <h4 class="title is-5">Cross-scale generalization</h4>
+            <p class="figure-caption-text">
+              Maze generalizes surprisingly far from simple training scales, while Queen requires larger training scales before it develops non-trivial transfer. This highlights a clear difference between sequential path planning and global combinatorial planning.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <figure class="image">
+            <img src="./static/assets/Generalization%20across%20scales%20for%20Maze%20(top)%20and%20Queen(bottom).png" alt="Generalization across scales for Maze and Queen" class="image-shadow">
+          </figure>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Generalization -->
-<section class="section">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Generalization</h2>
-    <div class="columns is-centered">
-      <div class="column is-10 has-text-centered">
-        <figure class="image">
-          <img src="./static/assets/generalization.png" alt="Generalization across train and test geometries" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
-        </figure>
-        <p class="caption" style="margin-top: 0.75rem;">Generalization of different training geometry types(left) and different training size(right)</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Scaling Effect -->
 <section class="section has-background-light">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Scaling Effect</h2>
-    <div class="columns is-centered is-vcentered">
-      <div class="column is-6 has-text-centered">
-        <figure class="image">
-          <img src="./static/assets/scaling_combined.png" alt="Data scaling: Pass@5 vs number of samples" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
-        </figure>
-        <p class="caption" style="margin-top: 0.75rem;">
-          <strong>Data scaling.</strong> Pass@5 vs. number of samples on hexagon and circle (trained for 500 steps, respectively). 
-        </p>
-      </div>
-      <div class="column is-6 has-text-centered">
-        <figure class="image">
-          <img src="./static/assets/compute.png" alt="Training time scaling: Pass@5 vs training steps" style="border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%;">
-        </figure>
-        <p class="caption" style="margin-top: 0.75rem;">
-          <strong>Training time scaling.</strong> More steps improve Pass@5 on both in-domain and OOD geometries, trained on hexagon; 800 steps reach top performance.
-        </p>
+
+    <div class="figure-block">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5">
+          <div class="info-card figure-caption-card">
+            <h4 class="title is-5">Joint scaling of data and compute</h4>
+            <p class="figure-caption-text">
+              Scaling up training data yields early gains that later saturate, while scaling up compute continues to improve performance, especially in later training stages. Queen benefits more from diverse data early on, while Maze benefits from longer optimization.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <figure class="image">
+            <img src="./static/assets/Joint%20Scaling%20of%20Data%20and%20Compute.png" alt="Joint scaling of data and compute" class="image-shadow">
+          </figure>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Conclusion & Future Work (可选) -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">Human Comparison</h2>
+
+    <div class="figure-block">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5">
+          <div class="info-card figure-caption-card">
+            <h4 class="title is-5">Success rate under time budgets</h4>
+            <p class="figure-caption-text">
+              Human solvers improve much more with added time than the model, especially on harder tasks. The model remains comparatively flat, revealing a persistent efficiency gap in visual planning.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <figure class="image">
+            <img src="./static/assets/Success%20rates%20of%20humans%20and%20Bagel%20under%20different%20time%20budgets..png" alt="Human and model success rates under different time budgets" class="image-shadow">
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="figure-block">
+      <div class="columns is-centered is-vcentered">
+        <div class="column is-5">
+          <div class="info-card figure-caption-card">
+            <h4 class="title is-5">Correlation with human groups</h4>
+            <p class="figure-caption-text">
+              On Maze, the model correlates most with the 18-year-old group; on Queen, it resembles the 6-year-old group more closely. This suggests that combinatorial global planning remains much harder than sequential route planning.
+            </p>
+          </div>
+        </div>
+        <div class="column is-7 has-text-centered">
+          <figure class="image">
+            <img src="./static/assets/Correlation%20between%20model%20and%20human.png" alt="Correlation between model and human groups" class="image-shadow" style="width: 72%; margin: 0 auto;">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container is-max-desktop">
     <div class="content">
       <h2 class="title is-3">Conclusion</h2>
       <p>
-        <strong>Amaze</strong> reveals that while current image editing models possess impressive generative capabilities, their <strong>visual planning</strong> abilities remain a significant bottleneck. 
-        Our benchmark provides a standardized way to measure this progress, and our findings on scaling and generalization suggest that targeted fine-tuning is a promising path toward more "intelligent" and "reasoning-capable" visual models.
+        <strong>AMAZE</strong> shows that current image editing models still have limited abstract visual planning ability. <strong>EAR</strong> provides a direct way to study reasoning in image space, and supervised fine-tuning on simple tasks yields surprisingly strong generalization. Still, even the best fine-tuned model falls short of the near-instant, zero-shot efficiency of human solvers.
       </p>
     </div>
   </div>
 </section>
 
-<!-- BibTeX Citation (非常重要) -->
-<!-- <section class="section" id="BibTeX">
+<section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <p>If you find our work or dataset useful for your research, please consider citing:</p>
-    <pre style="background-color: #f5f5f5; padding: 1.5rem; border-radius: 8px; border: 1px solid #ddd;"><code></code></pre>
+    <pre class="bibtex-box"><code>@article{zhou2026amaze,
+  title={Probing Visual Planning in Image Editing Models},
+  author={Zhimu Zhou and Yanpeng Zhao and Qiuyu Liao and Bo Zhao and Xiaojian Ma},
+  journal={arXiv preprint arXiv:2604.22868},
+  year={2026}
+}</code></pre>
   </div>
-</section> -->
-
-<!-- Acknowledgements (提升格调) -->
-<!-- <section class="section">
-  <div class="container is-max-desktop content">
-    <h2 class="title is-3">Acknowledgements</h2>
-    <p>
-      We thank the team at <strong>BIGAI</strong> for providing the computational resources. 
-      This work was supported by the National Key R&D Program of China. 
-      Special thanks to the contributors of the open-source models (Bagel, Janus, Qwen) used in our evaluation.
-    </p>
-  </div>
-</section> -->
+</section>
 
 <footer class="footer">
   <div class="container">
